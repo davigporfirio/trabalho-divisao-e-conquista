@@ -93,8 +93,12 @@ def par_mais_proximo_bruto(pontos):
     return melhor
 
 
-def par_mais_proximo_divisao(pontos, limiar=16):
-    """Ordena uma vez em x/y; combina em faixa com até 7 sucessores."""
+def par_mais_proximo_divisao(pontos, limiar=8):
+    """Ordena uma vez em x/y; combina em faixa com até 7 sucessores.
+
+    limiar: subproblemas com até `limiar` pontos usam força bruta. O padrão 8 vem do
+    experimento de limiares do benchmark (ver resultados/limiar_escolhido.txt).
+    """
     _validar_pontos(pontos)
     if limiar < 2:
         raise ValueError('O limiar deve ser pelo menos 2')
