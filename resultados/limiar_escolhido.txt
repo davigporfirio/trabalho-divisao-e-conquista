@@ -1,0 +1,8 @@
+Limiar escolhido: 8
+Pontuação (mediana / melhor mediana entre limiares, média entre os tamanhos; menor é melhor):
+  limiar 2: 1.1159
+  limiar 4: 1.0157
+  limiar 8: 1.0000
+  limiar 16: 1.2174
+  limiar 32: 1.7561
+  limiar 64: 3.1046
