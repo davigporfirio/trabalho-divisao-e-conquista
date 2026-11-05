@@ -1,0 +1,4 @@
+# Só para gerar gráficos (benchmark.py) e o PDF (gerar_relatorio.py).
+# Os algoritmos, o CLI e os testes usam apenas a biblioteca padrão.
+matplotlib>=3.8
+reportlab>=4.0
