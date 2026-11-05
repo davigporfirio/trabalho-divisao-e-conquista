@@ -1,6 +1,9 @@
-Sistema: Linux-6.18.57-x86_64-with-glibc2.41
-Python: 3.13.5
-Processador: não informado
+Sistema operacional: Windows-11-10.0.26200-SP0
+Processador: Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz
+Núcleos lógicos: 8
+Memória RAM: 7.8 GB
+Python: 3.14.7 (CPython)
 Semente: 2026
-Repetições: 5
-Tamanhos: 100, 200, 400, 800, 1600, 3200
+Repetições por tamanho: 10
+Tamanhos: 100, 200, 400, 800, 1600, 3200, 6400
+Limiar usado na Etapa 2: 8
