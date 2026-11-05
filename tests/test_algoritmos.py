@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from algoritmos import (soma_maxima_bruta, soma_maxima_divisao,
+from algoritmos import (soma_maxima_bruta, soma_maxima_divisao, soma_maxima_linear,
                         par_mais_proximo_bruto, par_mais_proximo_divisao)
 
 
@@ -19,7 +19,7 @@ class TestAlgoritmos(unittest.TestCase):
         self.assertEqual(soma_maxima_divisao([1, -1, 1]), (1, 0, 0))
 
     def test_soma_invalida(self):
-        for func in (soma_maxima_bruta, soma_maxima_divisao):
+        for func in (soma_maxima_bruta, soma_maxima_divisao, soma_maxima_linear):
             with self.assertRaises(ValueError):
                 func([])
 
@@ -39,6 +39,17 @@ class TestAlgoritmos(unittest.TestCase):
             for _ in range(5):
                 v = [rng.randint(-30, 30) for _ in range(n)]
                 self.assertEqual(soma_maxima_bruta(v), soma_maxima_divisao(v))
+
+    def test_soma_linear_igual_as_outras_com_muitos_empates(self):
+        # Valores em [-2, 2] geram muitos intervalos de mesma soma e zeros,
+        # exercitando a regra de desempate do Kadane.
+        rng = random.Random(7)
+        for n in range(1, 60):
+            for _ in range(20):
+                v = [rng.randint(-2, 2) for _ in range(n)]
+                esperado = soma_maxima_bruta(v)
+                self.assertEqual(soma_maxima_linear(v), esperado, v)
+                self.assertEqual(soma_maxima_divisao(v), esperado, v)
 
     def test_pontos_aleatorios(self):
         rng = random.Random(2026)
