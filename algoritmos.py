@@ -1,4 +1,4 @@
-"""Algoritmos de força bruta e divisão e conquista."""
+"""Algoritmos de força bruta, divisão e conquista e versão linear (Kadane)."""
 from math import hypot
 
 
@@ -45,6 +45,30 @@ def soma_maxima_divisao(vetor):
         return _melhor(_melhor(esquerda, direita), cruzado)
 
     return resolver(0, len(vetor) - 1)
+
+
+def soma_maxima_linear(vetor):
+    """Questão desafio: algoritmo de Kadane em O(n) tempo e O(1) espaço.
+
+    Mantém a melhor soma de um intervalo que termina em j. Se a soma
+    anterior é >= 0, estender o intervalo nunca piora a soma e, em
+    empate (soma anterior == 0), preserva o menor índice inicial; só
+    reinicia em j quando a soma anterior é negativa. A melhor resposta
+    global usa a mesma ordem das outras versões: maior soma, depois
+    menor início e depois menor fim.
+    """
+    if not vetor:
+        raise ValueError('O vetor não pode ser vazio')
+    atual, inicio_atual = vetor[0], 0
+    melhor = (atual, 0, 0)
+    for j in range(1, len(vetor)):
+        if atual < 0:
+            atual, inicio_atual = vetor[j], j
+        else:
+            atual += vetor[j]
+        if (-atual, inicio_atual, j) < (-melhor[0], melhor[1], melhor[2]):
+            melhor = (atual, inicio_atual, j)
+    return melhor
 
 
 def _validar_pontos(pontos):
