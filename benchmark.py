@@ -3,6 +3,7 @@
 Uso:
     python benchmark.py            # execução completa (alguns minutos)
     python benchmark.py --rapido   # smoke test: tamanhos pequenos, saída em resultados_rapido/
+    python benchmark.py --regerar  # refaz tabelas e gráficos a partir dos CSVs de resultados/
 
 Experimentos (semente 2026, perf_counter_ns, tempo só da chamada do algoritmo):
   1. Escalonamento: 5 algoritmos x n = 100..6400 x 10 repetições -> medicoes.csv / medias.csv
@@ -279,7 +280,9 @@ def gerar_graficos(pasta, medias, tamanhos, lim_medias, escolhido, cruz_medias):
         ax.plot(tamanhos[1:], [s[i + 1] / s[i] for i in range(len(s) - 1)], marker='o', label=nome)
     ax.axhline(4, color='gray', ls=':', label='n²: razão 4')
     ax.axhline(2, color='gray', ls='--', label='n: razão 2')
-    ax.set(title='Razão T(n)/T(n/2) ao dobrar n', xlabel='Tamanho n', ylabel='Razão entre tempos', xscale='log')
+    ax.set(title='Razão T(n)/T(n/2) ao dobrar n', xlabel='Tamanho n', ylabel='Razão entre tempos', xscale='log',
+           xticks=tamanhos[1:], xticklabels=tamanhos[1:])
+    ax.minorticks_off()
     ax.legend(fontsize=8)
     ax.grid(alpha=.3)
     fig.tight_layout()
@@ -296,6 +299,7 @@ def gerar_graficos(pasta, medias, tamanhos, lim_medias, escolhido, cruz_medias):
     ax.axvline(escolhido, color='gray', ls='--', label=f'escolhido = {escolhido}')
     ax.set(title='Etapa 2: tempo (mediana) relativo ao melhor limiar', xlabel='Limiar (força bruta se n ≤ limiar)',
            ylabel='Mediana / melhor mediana', xscale='log', xticks=LIMIARES, xticklabels=LIMIARES)
+    ax.minorticks_off()
     ax.legend()
     ax.grid(alpha=.3)
     fig.tight_layout()
@@ -319,13 +323,44 @@ def gerar_graficos(pasta, medias, tamanhos, lim_medias, escolhido, cruz_medias):
     plt.close(fig)
 
 
+def _ler_medias(caminho):
+    """Lê um CSV de médias, convertendo n, limiar e os tempos para número."""
+    with caminho.open(newline='', encoding='utf-8') as f:
+        linhas = list(csv.DictReader(f))
+    for linha in linhas:
+        for chave, valor in linha.items():
+            if chave != 'algoritmo':
+                linha[chave] = float(valor) if '.' in valor else int(valor)
+    return linhas
+
+
+def regerar(pasta):
+    """Recria tabelas e gráficos a partir dos CSVs já gravados (sem medir de novo)."""
+    medias = _ler_medias(pasta / 'medias.csv')
+    lim_medias = _ler_medias(pasta / 'limiar_medias.csv')
+    cruz_medias = _ler_medias(pasta / 'cruzamento.csv')
+    escolhido = int(next(l for l in (pasta / 'limiar_escolhido.txt').read_text(encoding='utf-8').splitlines()
+                         if l.startswith('Limiar escolhido')).split(':')[1])
+    tamanhos = sorted({m['n'] for m in medias})
+    (pasta / 'tabelas.md').write_text(
+        '## Soma máxima — tempo médio (ms)\n\n' + tabela_markdown(medias, ('soma_bruta', 'soma_divisao', 'soma_linear'), tamanhos)
+        + '\n\n## Par mais próximo — tempo médio (ms)\n\n' + tabela_markdown(medias, ('par_bruto', 'par_divisao'), tamanhos)
+        + '\n', encoding='utf-8')
+    gerar_graficos(pasta, medias, tamanhos, lim_medias, escolhido, cruz_medias)
+    print('Tabelas e gráficos regenerados a partir dos CSVs em', pasta)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rapido', action='store_true', help='execução curta para testar o script')
+    ap.add_argument('--regerar', action='store_true', help='só refaz tabelas e gráficos a partir dos CSVs')
     args = ap.parse_args()
     raiz = Path(__file__).parent
     pasta = raiz / ('resultados_rapido' if args.rapido else 'resultados')
     pasta.mkdir(exist_ok=True)
+    if args.regerar:
+        regerar(pasta)
+        return
     estabilizar_processo()
     tamanhos, t_limiar, t_cruz = TAMANHOS, TAMANHOS_LIMIAR, TAMANHOS_CRUZAMENTO
     repeticoes = REPETICOES
