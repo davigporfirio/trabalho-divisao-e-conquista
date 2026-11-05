@@ -61,6 +61,8 @@ def resolver_pontos(texto, algoritmo='divisao'):
 
 
 def main(argv=None):
+    for fluxo in (sys.stdout, sys.stderr):
+        fluxo.reconfigure(encoding='utf-8')  # mensagens iguais em qualquer sistema (cp1252 no Windows)
     ap = argparse.ArgumentParser(description='Algoritmos de divisão e conquista (lê stdin, escreve stdout).')
     sub = ap.add_subparsers(dest='problema', required=True)
     a = sub.add_parser('soma', help='subarranjo de soma máxima')
