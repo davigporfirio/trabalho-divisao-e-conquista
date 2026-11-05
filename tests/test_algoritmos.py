@@ -1,5 +1,9 @@
 import random
+import sys
 import unittest
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from algoritmos import (soma_maxima_bruta, soma_maxima_divisao,
                         par_mais_proximo_bruto, par_mais_proximo_divisao)
 
