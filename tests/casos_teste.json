@@ -1,0 +1,1096 @@
+{
+ "descricao": "Casos de teste (entrada e saída esperada). soma_maxima: saida = [soma, inicio, fim] (índices inclusivos, base 0; empate: menor início, depois menor fim). par_mais_proximo: saida = {distancia, ponto1, ponto2} (ponto1 <= ponto2 lexicograficamente; empate: menor (distancia, ponto1, ponto2)).",
+ "soma_maxima": [
+  {
+   "id": "soma_so_negativos",
+   "tipo": "enunciado",
+   "entrada": [
+    -5,
+    -2,
+    -7
+   ],
+   "saida": [
+    -2,
+    1,
+    1
+   ],
+   "justificativa": "Vetor só com negativos: a resposta é o maior elemento, e não 0 (o intervalo vazio não é permitido)."
+  },
+  {
+   "id": "soma_negativos_iguais",
+   "tipo": "enunciado",
+   "entrada": [
+    -3,
+    -3,
+    -3
+   ],
+   "saida": [
+    -3,
+    0,
+    0
+   ],
+   "justificativa": "Negativos todos iguais: três intervalos de tamanho 1 empatam em -3; vale o menor início."
+  },
+  {
+   "id": "soma_tamanho_1_positivo",
+   "tipo": "enunciado",
+   "entrada": [
+    9
+   ],
+   "saida": [
+    9,
+    0,
+    0
+   ],
+   "justificativa": "n = 1: caso base da recursão e do laço; índices (0, 0)."
+  },
+  {
+   "id": "soma_tamanho_1_negativo",
+   "tipo": "enunciado",
+   "entrada": [
+    -4
+   ],
+   "saida": [
+    -4,
+    0,
+    0
+   ],
+   "justificativa": "n = 1 com valor negativo: não pode devolver 0."
+  },
+  {
+   "id": "soma_tamanho_1_zero",
+   "tipo": "enunciado",
+   "entrada": [
+    0
+   ],
+   "saida": [
+    0,
+    0,
+    0
+   ],
+   "justificativa": "n = 1 com zero: soma zero é válida."
+  },
+  {
+   "id": "soma_empate_simples",
+   "tipo": "enunciado",
+   "entrada": [
+    1,
+    -1,
+    1
+   ],
+   "saida": [
+    1,
+    0,
+    0
+   ],
+   "justificativa": "Intervalos [0,0], [2,2] e [0,2] somam 1; vence o menor início e, depois, o menor fim."
+  },
+  {
+   "id": "soma_empate_varios_intervalos",
+   "tipo": "empate",
+   "entrada": [
+    2,
+    2,
+    -4,
+    4
+   ],
+   "saida": [
+    4,
+    0,
+    1
+   ],
+   "justificativa": "Três intervalos somam 4: [0,1], [0,3] e [3,3]. Vence início 0 e, entre [0,1] e [0,3], o menor fim."
+  },
+  {
+   "id": "soma_empate_alternado",
+   "tipo": "empate",
+   "entrada": [
+    3,
+    -3,
+    3,
+    -3,
+    3
+   ],
+   "saida": [
+    3,
+    0,
+    0
+   ],
+   "justificativa": "Soma 3 em [0,0], [0,2], [0,4], [2,2], [2,4] e [4,4]: seis empates; exige menor início e menor fim."
+  },
+  {
+   "id": "soma_empate_cruza_meio",
+   "tipo": "empate",
+   "entrada": [
+    1,
+    0,
+    0,
+    1
+   ],
+   "saida": [
+    2,
+    0,
+    3
+   ],
+   "justificativa": "Único ótimo cruza o meio e contém zeros no interior; testa a combinação esquerda/direita."
+  },
+  {
+   "id": "soma_empate_esq_dir_cruzado",
+   "tipo": "empate",
+   "entrada": [
+    5,
+    -5,
+    5,
+    -5
+   ],
+   "saida": [
+    5,
+    0,
+    0
+   ],
+   "justificativa": "Empate entre candidato da metade esquerda ([0,0]), da direita ([2,2]) e cruzado ([0,2]); deve escolher [0,0]."
+  },
+  {
+   "id": "soma_todos_zeros",
+   "tipo": "borda",
+   "entrada": [
+    0,
+    0,
+    0,
+    0
+   ],
+   "saida": [
+    0,
+    0,
+    0
+   ],
+   "justificativa": "Todos os intervalos empatam em 0; o desempate escolhe [0,0]."
+  },
+  {
+   "id": "soma_zeros_entre_negativos",
+   "tipo": "borda",
+   "entrada": [
+    -1,
+    0,
+    0,
+    -1
+   ],
+   "saida": [
+    0,
+    1,
+    1
+   ],
+   "justificativa": "Maior soma é 0 (de zeros); [1,1], [1,2] e [2,2] empatam; vence [1,1]."
+  },
+  {
+   "id": "soma_zero_a_esquerda_do_maximo",
+   "tipo": "borda",
+   "entrada": [
+    0,
+    5,
+    0
+   ],
+   "saida": [
+    5,
+    0,
+    1
+   ],
+   "justificativa": "Zeros nas pontas não mudam a soma; menor início é 0 e menor fim é 1 (não estende o zero final)."
+  },
+  {
+   "id": "soma_todos_positivos",
+   "tipo": "borda",
+   "entrada": [
+    1,
+    2,
+    3
+   ],
+   "saida": [
+    6,
+    0,
+    2
+   ],
+   "justificativa": "Todos positivos: o vetor inteiro."
+  },
+  {
+   "id": "soma_exemplo_classico",
+   "tipo": "borda",
+   "entrada": [
+    -2,
+    1,
+    -3,
+    4,
+    -1,
+    2,
+    1,
+    -5,
+    4
+   ],
+   "saida": [
+    6,
+    3,
+    6
+   ],
+   "justificativa": "Exemplo clássico do Kadane; o ótimo [3,6] cruza a posição do meio."
+  },
+  {
+   "id": "soma_maximo_no_fim",
+   "tipo": "borda",
+   "entrada": [
+    -1,
+    -2,
+    3,
+    4
+   ],
+   "saida": [
+    7,
+    2,
+    3
+   ],
+   "justificativa": "Ótimo encostado no fim do vetor."
+  },
+  {
+   "id": "soma_maximo_no_inicio",
+   "tipo": "borda",
+   "entrada": [
+    4,
+    3,
+    -2,
+    -1
+   ],
+   "saida": [
+    7,
+    0,
+    1
+   ],
+   "justificativa": "Ótimo encostado no início do vetor."
+  },
+  {
+   "id": "soma_alternado_negativo_primeiro",
+   "tipo": "borda",
+   "entrada": [
+    -1,
+    1,
+    -1,
+    1
+   ],
+   "saida": [
+    1,
+    1,
+    1
+   ],
+   "justificativa": "Empate entre [1,1], [3,3] e [1,3]; vence [1,1]."
+  },
+  {
+   "id": "soma_valores_grandes",
+   "tipo": "borda",
+   "entrada": [
+    1000000000,
+    1000000000,
+    1000000000
+   ],
+   "saida": [
+    3000000000,
+    0,
+    2
+   ],
+   "justificativa": "Valores grandes: sem estouro (inteiros Python) e soma exata."
+  }
+ ],
+ "par_mais_proximo": [
+  {
+   "id": "par_dois_pontos",
+   "tipo": "enunciado",
+   "entrada": [
+    [
+     0,
+     0
+    ],
+    [
+     3,
+     4
+    ]
+   ],
+   "saida": {
+    "distancia": 5.0,
+    "ponto1": [
+     0,
+     0
+    ],
+    "ponto2": [
+     3,
+     4
+    ]
+   },
+   "justificativa": "n = 2: triângulo 3-4-5, distância 5."
+  },
+  {
+   "id": "par_coincidentes",
+   "tipo": "enunciado",
+   "entrada": [
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     4,
+     5
+    ]
+   ],
+   "saida": {
+    "distancia": 0.0,
+    "ponto1": [
+     1,
+     2
+    ],
+    "ponto2": [
+     1,
+     2
+    ]
+   },
+   "justificativa": "Pontos repetidos: distância 0 com os dois pontos idênticos."
+  },
+  {
+   "id": "par_coordenadas_negativas",
+   "tipo": "borda",
+   "entrada": [
+    [
+     -1,
+     -1
+    ],
+    [
+     -2,
+     -2
+    ],
+    [
+     5,
+     5
+    ]
+   ],
+   "saida": {
+    "distancia": 1.4142135623730951,
+    "ponto1": [
+     -2,
+     -2
+    ],
+    "ponto2": [
+     -1,
+     -1
+    ]
+   },
+   "justificativa": "Coordenadas negativas; pontos devolvidos em ordem crescente."
+  },
+  {
+   "id": "par_colineares_horizontal",
+   "tipo": "colinear",
+   "entrada": [
+    [
+     0,
+     0
+    ],
+    [
+     10,
+     0
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     7,
+     0
+    ],
+    [
+     4,
+     0
+    ]
+   ],
+   "saida": {
+    "distancia": 1.0,
+    "ponto1": [
+     3,
+     0
+    ],
+    "ponto2": [
+     4,
+     0
+    ]
+   },
+   "justificativa": "Todos com y = 0 (mesmo y): o menor intervalo é entre x=3 e x=4."
+  },
+  {
+   "id": "par_colineares_vertical",
+   "tipo": "colinear",
+   "entrada": [
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     9
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     2,
+     20
+    ]
+   ],
+   "saida": {
+    "distancia": 1.0,
+    "ponto1": [
+     2,
+     4
+    ],
+    "ponto2": [
+     2,
+     5
+    ]
+   },
+   "justificativa": "Todos com x = 2 (mesmo x): todos caem na faixa; a ordenação por y decide."
+  },
+  {
+   "id": "par_colineares_diagonal_empate",
+   "tipo": "colinear",
+   "entrada": [
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     10,
+     10
+    ],
+    [
+     11,
+     11
+    ]
+   ],
+   "saida": {
+    "distancia": 1.4142135623730951,
+    "ponto1": [
+     0,
+     0
+    ],
+    "ponto2": [
+     1,
+     1
+    ]
+   },
+   "justificativa": "Pontos na diagonal: três pares empatam em raiz de 2; vence o par lexicograficamente menor."
+  },
+  {
+   "id": "par_empate_distancia",
+   "tipo": "empate",
+   "entrada": [
+    [
+     5,
+     5
+    ],
+    [
+     5,
+     6
+    ],
+    [
+     0,
+     0
+    ],
+    [
+     1,
+     0
+    ]
+   ],
+   "saida": {
+    "distancia": 1.0,
+    "ponto1": [
+     0,
+     0
+    ],
+    "ponto2": [
+     1,
+     0
+    ]
+   },
+   "justificativa": "Dois pares a distância 1; vence o par com menor primeiro ponto."
+  },
+  {
+   "id": "par_cruza_mediana",
+   "tipo": "divisao",
+   "entrada": [
+    [
+     0,
+     0
+    ],
+    [
+     100,
+     0
+    ],
+    [
+     200,
+     0
+    ],
+    [
+     300,
+     0
+    ],
+    [
+     400,
+     0
+    ],
+    [
+     500,
+     0
+    ],
+    [
+     600,
+     0
+    ],
+    [
+     700,
+     0
+    ],
+    [
+     800,
+     0
+    ],
+    [
+     999,
+     50
+    ],
+    [
+     1001,
+     50
+    ],
+    [
+     1100,
+     0
+    ],
+    [
+     1200,
+     0
+    ],
+    [
+     1300,
+     0
+    ],
+    [
+     1400,
+     0
+    ],
+    [
+     1500,
+     0
+    ],
+    [
+     1600,
+     0
+    ],
+    [
+     1700,
+     0
+    ],
+    [
+     1800,
+     0
+    ],
+    [
+     1900,
+     0
+    ]
+   ],
+   "saida": {
+    "distancia": 2.0,
+    "ponto1": [
+     999,
+     50
+    ],
+    "ponto2": [
+     1001,
+     50
+    ]
+   },
+   "justificativa": "n = 20 (acima do limiar 16): o melhor par tem um ponto em cada metade, então só a combinação na faixa o encontra."
+  },
+  {
+   "id": "par_muitos_duplicados",
+   "tipo": "duplicado",
+   "entrada": [
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     9,
+     9
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     2,
+     7
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ],
+    [
+     -4,
+     3
+    ]
+   ],
+   "saida": {
+    "distancia": 0.0,
+    "ponto1": [
+     -4,
+     3
+    ],
+    "ponto2": [
+     -4,
+     3
+    ]
+   },
+   "justificativa": "45 pontos em apenas 3 posições (15 cópias cada): vários pares a distância 0; vence o menor ponto. Estressa a faixa com muitos pontos na mesma linha."
+  },
+  {
+   "id": "par_grade_6x6",
+   "tipo": "empate",
+   "entrada": [
+    [
+     0,
+     0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     0,
+     3
+    ],
+    [
+     0,
+     4
+    ],
+    [
+     0,
+     5
+    ],
+    [
+     1,
+     0
+    ],
+    [
+     1,
+     1
+    ],
+    [
+     1,
+     2
+    ],
+    [
+     1,
+     3
+    ],
+    [
+     1,
+     4
+    ],
+    [
+     1,
+     5
+    ],
+    [
+     2,
+     0
+    ],
+    [
+     2,
+     1
+    ],
+    [
+     2,
+     2
+    ],
+    [
+     2,
+     3
+    ],
+    [
+     2,
+     4
+    ],
+    [
+     2,
+     5
+    ],
+    [
+     3,
+     0
+    ],
+    [
+     3,
+     1
+    ],
+    [
+     3,
+     2
+    ],
+    [
+     3,
+     3
+    ],
+    [
+     3,
+     4
+    ],
+    [
+     3,
+     5
+    ],
+    [
+     4,
+     0
+    ],
+    [
+     4,
+     1
+    ],
+    [
+     4,
+     2
+    ],
+    [
+     4,
+     3
+    ],
+    [
+     4,
+     4
+    ],
+    [
+     4,
+     5
+    ],
+    [
+     5,
+     0
+    ],
+    [
+     5,
+     1
+    ],
+    [
+     5,
+     2
+    ],
+    [
+     5,
+     3
+    ],
+    [
+     5,
+     4
+    ],
+    [
+     5,
+     5
+    ]
+   ],
+   "saida": {
+    "distancia": 1.0,
+    "ponto1": [
+     0,
+     0
+    ],
+    "ponto2": [
+     0,
+     1
+    ]
+   },
+   "justificativa": "Grade 6x6 (36 pontos): muitos pontos com mesmo x e mesmo y, dezenas de pares a distância 1 e a linha mediana repleta de pontos."
+  },
+  {
+   "id": "par_mesmo_x_21",
+   "tipo": "colinear",
+   "entrada": [
+    [
+     7,
+     0
+    ],
+    [
+     7,
+     3
+    ],
+    [
+     7,
+     6
+    ],
+    [
+     7,
+     9
+    ],
+    [
+     7,
+     12
+    ],
+    [
+     7,
+     15
+    ],
+    [
+     7,
+     18
+    ],
+    [
+     7,
+     21
+    ],
+    [
+     7,
+     24
+    ],
+    [
+     7,
+     27
+    ],
+    [
+     7,
+     30
+    ],
+    [
+     7,
+     33
+    ],
+    [
+     7,
+     36
+    ],
+    [
+     7,
+     39
+    ],
+    [
+     7,
+     42
+    ],
+    [
+     7,
+     45
+    ],
+    [
+     7,
+     48
+    ],
+    [
+     7,
+     51
+    ],
+    [
+     7,
+     54
+    ],
+    [
+     7,
+     57
+    ],
+    [
+     7,
+     31
+    ]
+   ],
+   "saida": {
+    "distancia": 1.0,
+    "ponto1": [
+     7,
+     30
+    ],
+    "ponto2": [
+     7,
+     31
+    ]
+   },
+   "justificativa": "21 pontos todos com x = 7, acima do limiar: todos pertencem à faixa em cada nível da recursão."
+  }
+ ]
+}

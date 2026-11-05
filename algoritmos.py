@@ -105,7 +105,9 @@ def par_mais_proximo_divisao(pontos, limiar=16):
 
     def resolver(xs, ys):
         n = len(xs)
-        if n <= limiar:
+        # Com n <= 3 dividir geraria uma metade de 1 ponto (sem par); por isso
+        # limiar 2 e 3 se comportam igual: subproblemas de até 3 pontos vão à força bruta.
+        if n <= limiar or n <= 3:
             return par_mais_proximo_bruto([(p[0], p[1]) for p in xs])
         meio = n // 2
         esq, dir = xs[:meio], xs[meio:]
