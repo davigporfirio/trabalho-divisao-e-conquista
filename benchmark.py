@@ -280,7 +280,9 @@ def gerar_graficos(pasta, medias, tamanhos, lim_medias, escolhido, cruz_medias):
         ax.plot(tamanhos[1:], [s[i + 1] / s[i] for i in range(len(s) - 1)], marker='o', label=nome)
     ax.axhline(4, color='gray', ls=':', label='n²: razão 4')
     ax.axhline(2, color='gray', ls='--', label='n: razão 2')
-    ax.set(title='Razão T(n)/T(n/2) ao dobrar n', xlabel='Tamanho n', ylabel='Razão entre tempos', xscale='log')
+    ax.set(title='Razão T(n)/T(n/2) ao dobrar n', xlabel='Tamanho n', ylabel='Razão entre tempos', xscale='log',
+           xticks=tamanhos[1:], xticklabels=tamanhos[1:])
+    ax.minorticks_off()
     ax.legend(fontsize=8)
     ax.grid(alpha=.3)
     fig.tight_layout()
